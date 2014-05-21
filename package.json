@@ -1,0 +1,27 @@
+{
+  "name": "grunt-rev-json",
+  "description": "Grunt task to digest files and generate a json.",
+  "version": "0.1.0",
+  "homepage": "https://github.com/ashi009/grunt-rev-json",
+  "author": "Xiaoyi Shi <ashi009@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/ashi009/grunt-rev-json.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ashi009/grunt-rev-json/issues"
+  },
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "peerDependencies": {
+    "grunt": "~0.4.5"
+  },
+  "keywords": [
+    "gruntplugin"
+  ],
+  "dependencies": {
+    "chalk": "^0.4.0",
+    "fast-crc32c": "^0.1.0"
+  }
+}
