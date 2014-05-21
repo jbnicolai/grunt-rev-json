@@ -1,6 +1,6 @@
 {
   "name": "grunt-rev-json",
-  "description": "Grunt task to digest files and generate a json.",
+  "description": "Grunt task to digest files and output rev for each file in a json.",
   "version": "0.1.0",
   "homepage": "https://github.com/ashi009/grunt-rev-json",
   "author": "Xiaoyi Shi <ashi009@gmail.com>",

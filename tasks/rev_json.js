@@ -6,7 +6,7 @@ var crc32c = require('fast-crc32c');
 console.log(crc32c);
 
 var kAlgorithms = {
-  crc32: function(buf) {
+  crc32c: function(buf) {
     var checksum = crc32c.calculate(buf);
     var buf = new Buffer(4);
     buf.writeUInt32BE(checksum, 0);
@@ -44,7 +44,7 @@ module.exports = function(grunt) {
 grunt.registerMultiTask('rev_json', 'Digest files and outpu as a json file.', function() {
 
   var options = this.options({
-    algorithm: 'crc32',
+    algorithm: 'crc32c',
     encoding: 'base64',
     urlSafe: true,
     length: 8
@@ -59,13 +59,13 @@ grunt.registerMultiTask('rev_json', 'Digest files and outpu as a json file.', fu
   this.files.forEach(function(file) {
     var versions = {};
     file.src.forEach(function(path) {
-      var version = hasher(grunt.file.read(path)).toString(options.encoding);
+      var rev = hasher(grunt.file.read(path)).toString(options.encoding);
       if (options.encoding == 'base64' && options.urlSafe)
-        version = toUrlSafeBase64(version);
-      version = version.substr(0, options.length);
-      grunt.log.writeln('File ' + chalk.cyan(path) + ' hashed (' +
-          chalk.cyan(version) + ').');
-      versions[relativePath(file.dest, path)] = version;
+        rev = toUrlSafeBase64(rev);
+      rev = rev.substr(0, options.length);
+      grunt.log.writeln('File ' + chalk.cyan(path) + ' digested (' +
+          chalk.cyan(rev) + ').');
+      versions[relativePath(file.dest, path)] = rev;
     });
     grunt.file.write(file.dest, JSON.stringify(versions));
     grunt.log.writeln('File ' + chalk.cyan(file.dest) + ' created (rev).')
