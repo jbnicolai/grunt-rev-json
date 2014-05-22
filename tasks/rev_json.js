@@ -3,8 +3,6 @@ var chalk = require('chalk');
 var crypto = require('crypto');
 var crc32c = require('fast-crc32c');
 
-console.log(crc32c);
-
 var kAlgorithms = {
   crc32c: function(buf) {
     var checksum = crc32c.calculate(buf);
