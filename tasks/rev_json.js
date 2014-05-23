@@ -5,10 +5,9 @@ var crc32c = require('fast-crc32c');
 
 var kAlgorithms = {
   crc32c: function(buf) {
-    var checksum = crc32c.calculate(buf);
-    var buf = new Buffer(4);
-    buf.writeUInt32BE(checksum, 0);
-    return buf;
+    var checksum = new Buffer(4);
+    checksum.writeUInt32BE(crc32c.calculate(buf), 0);
+    return checksum;
   },
   default: function(algorithm) {
     try {
@@ -39,36 +38,36 @@ function relativePath(from, to) {
 
 module.exports = function(grunt) {
 
-grunt.registerMultiTask('rev_json', 'Digest files and outpu as a json file.', function() {
+  grunt.registerMultiTask('rev_json', 'Digest files and outpu as a json file.', function() {
 
-  var options = this.options({
-    algorithm: 'crc32c',
-    encoding: 'base64',
-    urlSafe: true,
-    length: 8
-  });
-
-  var hasher = options.algorithm;
-  if (typeof hasher == 'string')
-    hasher = kAlgorithms[hasher] || kAlgorithms.default(hasher);
-  if (!hasher)
-    return grunt.fail('Cannot find algorithm "' + options.algorithm + '".');
-
-  this.files.forEach(function(file) {
-    var versions = {};
-    file.src.forEach(function(path) {
-      var rev = hasher(grunt.file.read(path)).toString(options.encoding);
-      if (options.encoding == 'base64' && options.urlSafe)
-        rev = toUrlSafeBase64(rev);
-      rev = rev.substr(0, options.length);
-      grunt.log.writeln('File ' + chalk.cyan(path) + ' digested (' +
-          chalk.cyan(rev) + ').');
-      versions[relativePath(file.dest, path)] = rev;
+    var options = this.options({
+      algorithm: 'crc32c',
+      encoding: 'base64',
+      urlSafe: true,
+      length: 8
     });
-    grunt.file.write(file.dest, JSON.stringify(versions));
-    grunt.log.writeln('File ' + chalk.cyan(file.dest) + ' created (rev).')
-  });
 
-});
+    var hasher = options.algorithm;
+    if (typeof hasher == 'string')
+      hasher = kAlgorithms[hasher] || kAlgorithms.default(hasher);
+    if (!hasher)
+      return grunt.fail('Cannot find algorithm "' + options.algorithm + '".');
+
+    this.files.forEach(function(file) {
+      var versions = {};
+      file.src.forEach(function(path) {
+        var rev = hasher(grunt.file.read(path)).toString(options.encoding);
+        if (options.encoding == 'base64' && options.urlSafe)
+          rev = toUrlSafeBase64(rev);
+        rev = rev.substr(0, options.length);
+        grunt.log.writeln('File ' + chalk.cyan(path) + ' digested (' +
+            chalk.cyan(rev) + ').');
+        versions[relativePath(file.dest, path)] = rev;
+      });
+      grunt.file.write(file.dest, JSON.stringify(versions));
+      grunt.log.writeln('File ' + chalk.cyan(file.dest) + ' created (rev).');
+    });
+
+  });
 
 };
