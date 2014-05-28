@@ -1,4 +1,4 @@
-# grunt-rev-json
+# grunt-rev-json [![NPM version](https://badge.fury.io/js/grunt-rev-json.png)](http://badge.fury.io/js/grunt-rev-json) [![Dependencies](https://david-dm.org/ashi009/grunt-rev-json.png)](https://david-dm.org/ashi009/grunt-rev-json)
 
 Digest files and output rev for each file in a json.
 
