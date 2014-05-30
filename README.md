@@ -31,7 +31,7 @@ grunt.initConfig({
       encoding: 'base64',
       // use url safe base64, only works when encoding is base64
       urlSafe: true,
-      // prefix length of encoded digest
+      // prefix length of encoded digest, pass 0 or -1 to use complete digest
       length: 8
     },
     your_target: {
@@ -41,3 +41,47 @@ grunt.initConfig({
   },
 });
 ```
+
+### Example
+
+```sh
+$ pwd
+/Users/xiaoyi/Projects/public
+$ tree
+.
+├── scripts
+│   ├── desktop.js
+│   ├── error.js
+│   └── moment.js
+└── styles
+    ├── desktop.css
+    └── mobile.css
+```
+
+```js
+grunt.initConfig({
+  rev_json: {
+    options: {
+      algorithm: 'sha224',
+      length: -1
+    },
+    static: {
+      src: ['public/**/*.{js,css}'],
+      dest: 'public/rev.json'
+    }
+  }
+});
+```
+
+```json
+{
+  "scripts/desktop.js": "eSgRA3v4XUcOM66neA7Y2ZfMOX5w0hNWVfuHpQ",
+  "scripts/error.js": "ZQIiKlJ0_Nj0F8-hi1mnYccZ61rJ5n426vgVBw",
+  "scripts/mobile.js": "QxB9zfm1PyhYKFMBiqXh9ox8fmCcNmwXWkTRFg",
+  "styles/desktop.css": "xjrIkYLwmiL6tTMduEjtziR3cr3bJkxyHZ3wQw",
+  "styles/mobile.css": "YcJ2rs1SI7kbcjgnVO8K0Bf1moFVLwmbPHrVaw"
+}
+```
+
+Output JSON will use src path (relative to output file location) as key, and
+digest as value.

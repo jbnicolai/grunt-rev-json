@@ -59,7 +59,8 @@ module.exports = function(grunt) {
         var rev = hasher(grunt.file.read(path)).toString(options.encoding);
         if (options.encoding == 'base64' && options.urlSafe)
           rev = toUrlSafeBase64(rev);
-        rev = rev.substr(0, options.length);
+        if (options.length > 0)
+          rev = rev.substr(0, options.length);
         grunt.log.writeln('File ' + chalk.cyan(path) + ' digested (' +
             chalk.cyan(rev) + ').');
         versions[relativePath(file.dest, path)] = rev;
